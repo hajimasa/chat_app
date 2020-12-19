@@ -28,12 +28,7 @@
             <div class="col-md-8 col-sm-10 col-12 mx-auto my-auto text-center">
                 <h1 class="heading-black text-capitalize">チャットをはじめよう</h1>
                 <p class="lead py-3">Devchaを使えば仲間とすぐにチャットを始められます。<br>あなたの名前を入力して、部屋を作成しましょう。</p>
-                <form onsubmit="return false;">
-                  <div class="form-group">
-                    <input id="username" placeholder="名前" class="form-control" type="text" style="margin-bottom: 1em;" />
-                  </div>
-                  <button id='btn' class="btn btn-primary d-inline-flex flex-row align-items-center">部屋を作成する</button>
-                </form>
+                <button id='btn' class="btn btn-primary d-inline-flex flex-row align-items-center">部屋を作成する</button>
             </div>
         </div>
     </div>
@@ -43,8 +38,6 @@
   const btn = document.getElementById('btn')
   btn.addEventListener('click', function() {
     const uuid = getUniqueStr().toLowerCase()
-    const username = document.getElementById('username').value
-    console.log(uuid, username)
     window.location.href = `chat.html?token=${uuid}`
   })
 
