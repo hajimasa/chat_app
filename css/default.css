@@ -7859,6 +7859,7 @@ footer h5 {
   }
 .bottom-box{
       width: 100%;
-   position: absolute;/*←絶対位置*/
+   position: fixed;/*←絶対位置*/
+   background-color: #000000;
       bottom: 0; /*下に固定*/
   }
