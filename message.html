@@ -74,18 +74,21 @@
       const message = document.getElementById("message").value
       const room = getQueryRoomParam();
 
-	    connection.send(JSON.stringify(
-	      {
-            action:"sendmessage",
-            data:{
+      if (name && message) {
+        connection.send(JSON.stringify(
+          {
+            action: "sendmessage",
+            data: {
               room: room,
               name: name,
               message: message
             }
-	      }
-	    )
-      );
-
+          }
+        ));
+      } else {
+        alert('名前とメッセージは必須です。')
+      }
+	    
       const messageinput = document.getElementById('message')
       messageinput.value = ""
 
@@ -125,8 +128,8 @@
 
   <div class="flex-grow-0 py-3 px-4 bottom-box">
     <div class="input-group">
-      <input type="text" class="form-control m-1" placeholder="名前" id="username">
-      <input type="text" class="form-control m-1 w-50" placeholder="メッセージ" id="message" onkeydown="enterSubmit()">
+      <input type="text" class="form-control m-1" placeholder="名前" id="username" required>
+      <input type="text" class="form-control m-1 w-50" placeholder="メッセージ" id="message" onkeydown="enterSubmit()" required>
       <button class="btn btn-primary m-1" onclick="snd_msg()">送信</button>
     </div>
   </div>
