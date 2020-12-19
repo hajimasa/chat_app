@@ -478,8 +478,12 @@ pre {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
+  height: 80px;
   margin-right: auto;
-  margin-left: auto; }
+  margin-left: auto;
+  position: fixed;
+  background-color: #000000;
+ }
 
 .row {
   display: -ms-flexbox;
@@ -7853,8 +7857,9 @@ footer h5 {
 
 .wrapper{
   min-height: 100vh;
-  position: relative;/*←相対位置*/
+  padding-top: 80px;
   padding-bottom: 120px;/*←footerの高さ*/
+  top: 86px;
   box-sizing: border-box;/*←全て含めてmin-height:100vhに*/
   }
 .bottom-box{
