@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Devcha</title>
+    <title>DEVCHA</title>
     <meta name="description" content="簡単にチャットするならDevcha"/>
 
     <!-- Bootstrap CSS / Color Scheme -->
@@ -38,7 +38,6 @@
             let msg = "メッセージを受信しました。" + e.data;
 
             const response = JSON.parse(e.data)
-            console.log(response)
 
             const dateTime = new Date(response.posted_at)
 
@@ -123,7 +122,10 @@
 
   <div class="container-fluid">
     <nav class="navbar navbar-expand-md navbar-dark">
-        <a class="navbar-brand heading-black" href="index.html">Devcha</a>
+        <a class="navbar-brand heading-black" href="index.html">DEVCHA</a>
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button"
+         data-dnt="true" data-size="large" data-text="DEVCHAやろうぜ！" data-hashtags="DEVCHA" data-show-count="false"></a>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     </nav>
   </div>
 
