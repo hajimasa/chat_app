@@ -37,15 +37,21 @@
 <script>
   const btn = document.getElementById('btn')
   btn.addEventListener('click', function() {
-    const uuid = getUniqueStr().toLowerCase()
-    window.location.href = `chat.html?token=${uuid}`
+    window.location.href = `chat.html?token=${uuid()}`
   })
 
-  function getUniqueStr(myStrong){
-    var strong = 1000;
-    if (myStrong) strong = myStrong;
-    return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16)
+  function uuid() {
+  var uuid = "", i, random;
+  for (i = 0; i < 32; i++) {
+    random = Math.random() * 16 | 0;
+
+    if (i == 8 || i == 12 || i == 16 || i == 20) {
+      uuid += "-"
+    }
+    uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
   }
+  return uuid;
+}
 </script>
 </body>
 </html>
