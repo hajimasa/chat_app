@@ -69,6 +69,17 @@
 
         };
 
+/*
+        connection.send(JSON.stringify(
+          {
+            action: "getmessagelist",
+            data: {
+              room: getQueryRoomParam();
+            }
+          }
+        ));
+*/
+
         connection.onclose = function () {
             console.log("コネクションを終了しました。");
         };
