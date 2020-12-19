@@ -29,11 +29,11 @@
 
     //コネクション開始ボタン
 
-    function open_cnn() {
+ //   function open_cnn() {
 
         console.log("コネクションを開始しします。");
 
-        connection = new WebSocket('wss://echo.websocket.org');
+        connection = new WebSocket('wss://wo8r0ppuw7.execute-api.ap-northeast-1.amazonaws.com/develop');
 
         //コネクションが接続された時の動き
 
@@ -57,7 +57,7 @@
 
             let msg = "メッセージを受信しました。" + e.data;
 
-            document.getElementById("RcvMsg").value = msg;
+            alert(msg);
 
         };
 
@@ -69,13 +69,21 @@
 
         };
 
-    }
+//    }
 
     //メッセージ送信ボタン
 
     function snd_msg() {
 
-        connection.send(document.getElementById("SndMsg").value);
+	    connection.send(JSON.stringify(
+	      {
+                action:"sendmessage",
+		data:{
+		  message:"unchi!"
+		}
+	      }
+	    )
+	    );
 
     }
 
