@@ -159,10 +159,14 @@
   </div>
 
   <div class="flex-grow-0 py-3 px-4 bottom-box">
-    <div class="input-group">
-      <input type="text" class="form-control m-1" placeholder="名前" id="username" required>
-      <input type="text" class="form-control m-1 w-50" placeholder="メッセージ" id="message" onkeydown="enterSubmit()" required>
-      <button class="btn-primary m-1" onclick="sendMessage()"><i class="fas fa-paper-plane" style="color:white"></i></button>
+    <div class="input-zone">
+      <div class="username m-1">
+        <input type="text" class="form-control" placeholder="名前" id="username" required>
+      </div>
+      <div class="message m-1">
+        <input type="text" class="form-control" placeholder="メッセージ" id="message" onkeydown="enterSubmit()" required>
+      </div>
+      <button class="btn-primary m-1 submitbtn" onclick="sendMessage()"><i class="fas fa-paper-plane" style="color:white"></i></button>
     </div>
     <div style="text-align: center">
       <small>&copy; 2020 週末開発倶楽部 All Rights Reserved.</small>

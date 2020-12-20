@@ -7868,3 +7868,23 @@ footer h5 {
    background-color: #000000;
       bottom: 0; /*下に固定*/
   }
+
+.submitbtn,
+.submitbtn:hover,
+.submitbtn:active,
+.submitbtn:focus{
+    outline: 0;
+}
+
+.username{
+  width: 30%;
+}
+
+.message{
+  flex: 1;
+}
+
+.input-zone {
+  width: 100%;
+  display: flex;
+}
