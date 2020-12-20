@@ -7874,6 +7874,8 @@ footer h5 {
 .submitbtn:active,
 .submitbtn:focus{
     outline: 0;
+    height: calc( 1.55em * 1.4 );
+    line-height: 1.3;
 }
 
 .username{
@@ -7898,4 +7900,7 @@ footer h5 {
   text-indent: 1%;
   outline:none;
   border: 0.2em solid lightgray;
+  height: calc( 1.3em * 2 );
+  line-height: 1.3;
+  resize:none;
 }

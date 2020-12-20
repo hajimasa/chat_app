@@ -87,16 +87,26 @@
         const p = document.createElement("p")
         const pName = '[' + response.user_name + ']';
         const ptext = document.createTextNode(`${pName} ${dateTime.toLocaleDateString()}(${dayOfWeekStr}) ${dateTime.toLocaleTimeString('ja-JP')}`)
-        
+
         p.appendChild(ptext)
         p.classList.add("p-0", "m-0")
 
-        const span = document.createElement('span')
-        const stext = document.createTextNode(response.message)
-        span.appendChild(stext)
+        const rows = response.message.split('\n')
+
+        const spans = []
+        rows.map(function(x){
+          const span = document.createElement('span')
+          const br = document.createElement('br')
+          const stext = document.createTextNode(x)
+          span.appendChild(stext)
+          span.appendChild(br)
+          spans.push(span)
+        })
 
         div.appendChild(p)
-        div.appendChild(span)
+        spans.map(function(x){
+          div.appendChild(x)
+        })
 
         const content = document.getElementById('chat-box')
         content.appendChild(div)
@@ -127,7 +137,7 @@
 
     function enterSubmit(){
       //EnterキーならSubmit
-      if(window.event.keyCode==13)sendMessage();
+      // if(window.event.keyCode==13)sendMessage();
     }
 
     function getQueryRoomParam() {
@@ -166,9 +176,9 @@
         <input type="text" class="input-text-box rounded-pill w-100" placeholder="名前" id="username" required>
       </div>
       <div class="message mt-1 mx-1">
-        <input type="text" class="input-text-box rounded-pill w-100 m" placeholder="メッセージ" id="message" onkeydown="enterSubmit()" required>
+        <textarea type="text" class="input-text-box rounded-pill w-100 m" placeholder="メッセージ" id="message" onkeydown="enterSubmit()" required></textarea>
       </div>
-      <button class="btn-primary mt-1 submitbtn" onclick="sendMessage()"><i class="fas fa-paper-plane" style="color:white"></i></button>
+      <button class="btn-primary mt-1 submitbtn rounded" onclick="sendMessage()"><i class="fas fa-paper-plane" style="color:white"></i></button>
     </div>
     <div style="text-align: center">
       <small>&copy; 2020 週末開発倶楽部 All Rights Reserved.</small>
