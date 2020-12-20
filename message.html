@@ -18,14 +18,18 @@
 
 <body>
 <script type="text/javascript">
-    console.log("コネクションを開始しします。");
-    const connection = new WebSocket('wss://3hbo79p2ab.execute-api.ap-northeast-1.amazonaws.com/develop');
+
+    const connection = new WebSocket('wss://3hbo79p2ab.execute-api.ap-northeast-1.amazonaws.com/develop')
+    attachEvent(connection);
+
     const token = getQueryRoomParam();
     if (!token) {
         location.href = './index.html';
     }
 
-    connection.onmessage = function (e) {
+    function attachEvent(connection){
+
+      connection.onmessage = function (e) {
         const response = JSON.parse(e.data)
         // 既存のメッセージ反映処理
         if (response.Items && response.Items.length > 0){
@@ -43,25 +47,28 @@
         window.scroll(0, bottom);
     };
 
-    connection.onopen = function (e) {
-        console.log("コネクションを開始しました。");
-        connection.send(JSON.stringify(
-            {
-                action: "getmessagelist",
-                data: {
-                    room: token
-                }
-            }
-        ));
-    };
+      connection.onopen = function (e) {
+          console.log("コネクションを開始しました。");
+          connection.send(JSON.stringify(
+              {
+                  action: "getmessagelist",
+                  data: {
+                      room: token
+                  }
+              }
+          ));
+      };
 
-    connection.onerror = function (error) {
+      connection.onerror = function (error) {
+        alert('エラーが発生しました。')
         console.log("エラーが発生しました。");
-    };
+      };
 
-    connection.onclose = function () {
+      connection.onclose = function () {
+        alert('コネクションを終了しました。')
         console.log("コネクションを終了しました。");
-    };
+      };
+    }
 
     function compare(a, b) {
         const targetA = a.posted_at;
@@ -111,7 +118,16 @@
         const content = document.getElementById('chat-box')
         content.appendChild(div)
     }
+
     function sendMessage() {
+
+      console.log(connection)
+
+      // 接続が生きているかみる
+      if (connection.readyState !== WebSocket.OPEN){
+        alert('コネクションがありません。')
+      }
+
       const name = document.getElementById("username").value
       const message = document.getElementById("message").value
 
@@ -137,7 +153,7 @@
 
     function enterSubmit(){
       //EnterキーならSubmit
-      // if(window.event.keyCode==13)sendMessage();
+      // TODO if(window.event.keyCode==13)sendMessage();
     }
 
     function getQueryRoomParam() {
