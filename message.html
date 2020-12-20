@@ -35,6 +35,7 @@
     function attachEvent(connection){
 
       connection.onmessage = function (e) {
+        console.log(e.data)
         const response = JSON.parse(e.data)
         // 既存のメッセージ反映処理
         if (response.Items && response.Items.length > 0){
