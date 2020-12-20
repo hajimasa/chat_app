@@ -132,6 +132,11 @@
         return
       }
 
+      if (connection.readyState !== WebSocket.OPEN) {
+        alert('コネクションは閉じられています。再読み込みしてください。')
+        return
+      }
+
       const name = document.getElementById("username").value
       const message = document.getElementById("message").value
 
