@@ -7888,3 +7888,14 @@ footer h5 {
   width: 100%;
   display: flex;
 }
+
+.input-text-box,
+.input-text-box:focus
+{
+  font-size: 80%;
+  display: inline-block;
+  padding: 0.5em;
+  text-indent: 1%;
+  outline:none;
+  border: 0.2em solid lightgray;
+}
