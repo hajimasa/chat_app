@@ -17,72 +17,73 @@
 <script type="text/javascript">
 
     var connection = "";
+    console.log("コネクションを開始しします。");
+    connection = new WebSocket('wss://3hbo79p2ab.execute-api.ap-northeast-1.amazonaws.com/develop');
 
-        console.log("コネクションを開始しします。");
+    connection.onmessage = function (e) {
+        const response = JSON.parse(e.data)
+        const param = getQueryRoomParam();
+        // 既存のメッセージ反映処理
+        if (response.Items && response.Items.length > 0){
+            console.log(response.Items)
+            response.Items.map(function(res){
+                renderMessage(res);
+            });
+        }
+        // 新規メッセージ反映処理
+        if (response.room === param) {
+            renderMessage(response);
+        }
+        var element = document.documentElement;
+        var bottom = element.scrollHeight - element.clientHeight;
+        window.scroll(0, bottom);
+    };
 
-        connection = new WebSocket('wss://3hbo79p2ab.execute-api.ap-northeast-1.amazonaws.com/develop');
-
-        connection.onopen = function (e) {
-
-            console.log("コネクションを開始しました。");
-            const param = getQueryRoomParam();
-            connection.send(JSON.stringify(
-                {
-                    action: "getmessagelist",
-                    data: {
-                        room: param.token
-                    }
+    connection.onopen = function (e) {
+        console.log("コネクションを開始しました。");
+        const param = getQueryRoomParam();
+        connection.send(JSON.stringify(
+            {
+                action: "getmessagelist",
+                data: {
+                    room: param
                 }
-            ));
+            }
+        ));
+    };
 
-        };
+    connection.onerror = function (error) {
+        console.log("エラーが発生しました。");
+    };
 
-        connection.onerror = function (error) {
+    connection.onclose = function () {
+        console.log("コネクションを終了しました。");
+    };
 
-            console.log("エラーが発生しました。");
+    function renderMessage(response) {
+        const dateTime = new Date(response.posted_at)
+        const dayOfWeek = dateTime.getDay()
+        const dayOfWeekStr = [ "日", "月", "火", "水", "木", "金", "土" ][dayOfWeek] ;	// 曜日(日本語表記)
 
-        };
+        const div = document.createElement('div')
+        div.classList.add("rounded", "py-2", "px-3", "ml-3")
 
-        connection.onmessage = function (e) {
+        const p = document.createElement("p")
+        const ptext = document.createTextNode(`${response.user_name} ${dateTime.toLocaleDateString()}(${dayOfWeekStr}) ${dateTime.toLocaleTimeString('ja-JP')}`)
+        p.appendChild(ptext)
+        p.classList.add("p-0", "m-0")
 
-            let msg = "メッセージを受信しました。" + e.data;
+        const span = document.createElement('span')
+        const stext = document.createTextNode(response.message)
+        span.appendChild(stext)
 
-            const response = JSON.parse(e.data)
+        div.appendChild(p)
+        div.appendChild(span)
 
-            const dateTime = new Date(response.posted_at)
-
-            var dayOfWeek = dateTime.getDay()
-            var dayOfWeekStr = [ "日", "月", "火", "水", "木", "金", "土" ][dayOfWeek] ;	// 曜日(日本語表記)
-
-            const div = document.createElement('div')
-            div.classList.add("rounded", "py-2", "px-3", "ml-3")
-
-            const p = document.createElement("p")
-            const ptext = document.createTextNode(`${response.user_name} ${dateTime.toLocaleDateString()}(${dayOfWeekStr}) ${dateTime.toLocaleTimeString('ja-JP')}`)
-            p.appendChild(ptext)
-            p.classList.add("p-0", "m-0")
-
-            const span = document.createElement('span')
-            const stext = document.createTextNode(response.message)
-            span.appendChild(stext)
-
-            div.appendChild(p)
-            div.appendChild(span)
-
-            const content = document.getElementById('chat-box')
-            content.appendChild(div)
-
-            var element = document.documentElement;
-            var bottom = element.scrollHeight - element.clientHeight;
-            window.scroll(0, bottom);
-
-        };
-
-        connection.onclose = function () {
-            console.log("コネクションを終了しました。");
-        };
-
-    function snd_msg() {
+        const content = document.getElementById('chat-box')
+        content.appendChild(div)
+    }
+    function sendMessage() {
       const name = document.getElementById("username").value
       const message = document.getElementById("message").value
       const room = getQueryRoomParam();
@@ -109,21 +110,21 @@
 
     function enterSubmit(){
       //EnterキーならSubmit
-      if(window.event.keyCode==13)snd_msg();
+      if(window.event.keyCode==13)sendMessage();
     }
 
     function getQueryRoomParam() {
-      var queryString = window.location.search;
-      var queryObject = new Object();
-      if (queryString) {
-        queryString = queryString.substring(1);
-        var parameters = queryString.split('&');
-        for (var i = 0; i < parameters.length; i++) {
-          var element = parameters[i].split('=');
-          var paramName = decodeURIComponent(element[0]);
-          var paramValue = decodeURIComponent(element[1]);
+      const queryParam = window.location.search;
+      const queryObject = new Object();
+      if (queryParam) {
+        const queryString = queryParam.substring(1);
+        const parameters = queryString.split('&');
+        parameters.map(function(param){
+          const element = param.split('=');
+          const paramName = decodeURIComponent(element[0]);
+          const paramValue = decodeURIComponent(element[1]);
           queryObject[paramName] = paramValue;
-        }
+        });
       }
       return queryObject.token;
     }
@@ -146,7 +147,7 @@
     <div class="input-group">
       <input type="text" class="form-control m-1" placeholder="名前" id="username" required>
       <input type="text" class="form-control m-1 w-50" placeholder="メッセージ" id="message" onkeydown="enterSubmit()" required>
-      <button class="btn btn-primary m-1" onclick="snd_msg()">送信</button>
+      <button class="btn btn-primary m-1" onclick="sendMessage()">送信</button>
     </div>
     <div style="text-align: center">
       <small>&copy; 2020 週末開発倶楽部 All Rights Reserved.</small>
