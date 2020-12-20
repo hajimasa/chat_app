@@ -15,38 +15,37 @@
 
 <body>
 <script type="text/javascript">
-
-    var connection = "";
     console.log("コネクションを開始しします。");
-    connection = new WebSocket('wss://3hbo79p2ab.execute-api.ap-northeast-1.amazonaws.com/develop');
+    const connection = new WebSocket('wss://3hbo79p2ab.execute-api.ap-northeast-1.amazonaws.com/develop');
+    const token = getQueryRoomParam();
+    if (!token) {
+        location.href = './index.html';
+    }
 
     connection.onmessage = function (e) {
         const response = JSON.parse(e.data)
-        const param = getQueryRoomParam();
         // 既存のメッセージ反映処理
         if (response.Items && response.Items.length > 0){
-            console.log(response.Items)
             response.Items.map(function(res){
                 renderMessage(res);
             });
         }
         // 新規メッセージ反映処理
-        if (response.room === param) {
+        if (response.room === token) {
             renderMessage(response);
         }
-        var element = document.documentElement;
-        var bottom = element.scrollHeight - element.clientHeight;
+        const element = document.documentElement;
+        const bottom = element.scrollHeight - element.clientHeight;
         window.scroll(0, bottom);
     };
 
     connection.onopen = function (e) {
         console.log("コネクションを開始しました。");
-        const param = getQueryRoomParam();
         connection.send(JSON.stringify(
             {
                 action: "getmessagelist",
                 data: {
-                    room: param
+                    room: token
                 }
             }
         ));
@@ -86,14 +85,13 @@
     function sendMessage() {
       const name = document.getElementById("username").value
       const message = document.getElementById("message").value
-      const room = getQueryRoomParam();
 
       if (name && message) {
         connection.send(JSON.stringify(
           {
             action: "sendmessage",
             data: {
-              room: room,
+              room: token,
               name: name,
               message: message
             }
