@@ -25,6 +25,15 @@
         connection.onopen = function (e) {
 
             console.log("コネクションを開始しました。");
+            const param = getQueryRoomParam();
+            connection.send(JSON.stringify(
+                {
+                    action: "getmessagelist",
+                    data: {
+                        room: param.token
+                    }
+                }
+            ));
 
         };
 
@@ -69,17 +78,6 @@
 
         };
 
-/*
-        connection.send(JSON.stringify(
-          {
-            action: "getmessagelist",
-            data: {
-              room: getQueryRoomParam();
-            }
-          }
-        ));
-*/
-
         connection.onclose = function () {
             console.log("コネクションを終了しました。");
         };
@@ -103,7 +101,7 @@
       } else {
         alert('名前とメッセージは必須です。')
       }
-	    
+
       const messageinput = document.getElementById('message')
       messageinput.value = ""
 
